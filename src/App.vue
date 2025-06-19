@@ -27,6 +27,7 @@ const messages = ref<Msg[]>([
   { id: '1', role: 'system', content: 'You are a helpful assistant using [LM Studio](https://lmstudio.ai)' },
   { id: '2', role: 'user', content: 'Who are you?' },
   { id: '3', role: 'assistant', content: 'I am your *faithful* AI assistant' },
+  { id: '3.5', role: 'xxx', content: 'This is an example custom message' },
   { id: '4', role: 'user', content: 'Who are you?' },
   { id: '5', role: 'assistant', content: 'I am your **faithful** AI assistant' },
   { id: '6', role: 'user', content: 'Who are you?' },
@@ -61,5 +62,12 @@ html, body {
   height: calc(100dvh - 2rem);
   margin-inline: auto;
   padding-block: 1rem;
+}
+
+.message.xxx {
+  align-self: center;
+  text-align: center;
+  width: 100%;
+  background-color: antiquewhite
 }
 </style>

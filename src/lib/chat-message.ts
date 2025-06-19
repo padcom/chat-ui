@@ -6,7 +6,7 @@ export const Roles = [
   'user',
 ] as const
 
-export type Role = typeof Roles[number]
+export type Role = typeof Roles[number] | (string & {})
 
 export interface ChatMessage {
   id: string
