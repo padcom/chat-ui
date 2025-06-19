@@ -89,7 +89,7 @@ To use a custom message display use the `default` slot of `Messages`:
 ```
 
 Sometimes all you will want is to add some styling to the message. For example,
-to add (github-markdown-css)[https://npmjs.com/package/github-markdown-css].
+to add [github-markdown-css](https://npmjs.com/package/github-markdown-css).
 In those cases you can reuse the `Message` component exposed from the library:
 
 ```vue
@@ -108,6 +108,11 @@ import { Messages, Message, Prompt type ChatMessage } from '@padcom/chat-ui'
 
 ...
 </script>
+
+<style>
+@import "github-markdown-css";
+@import "@padcom/chat-ui/dist/index.css";
+</style>
 ```
 
 Finally, you might want to customize the message displayed while the `content` of the
