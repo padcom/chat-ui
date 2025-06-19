@@ -31,9 +31,6 @@
   },
   "scripts": {
     "start": "vite",
-    "test": "vitest run --root . --coverage",
-    "test:watch": "vitest watch --root . --coverage",
-    "lint": "eslint './src/**/*.{ts,vue}'",
     "dev": "vite build -w",
     "build": "vite build"
   },
