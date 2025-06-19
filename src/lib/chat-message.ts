@@ -2,6 +2,7 @@ export const Roles = [
   'system',
   'developer',
   'assistant',
+  'tool',
   'user',
 ] as const
 
