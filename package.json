@@ -32,7 +32,8 @@
   "scripts": {
     "start": "vite",
     "dev": "vite build -w",
-    "build": "vite build"
+    "build": "vite build",
+    "prepublishOnly": "npm install && npm run build"
   },
   "devDependencies": {
     "@padcom/eslint-config-vue": "0.20.1",
