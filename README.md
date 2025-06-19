@@ -40,6 +40,10 @@ function ask(question: string) {
   messages.value.push({ id: '4', role: 'user', content: question })
 }
 </script>
+
+<style>
+@import "@padcom/chat-ui/dist/index.css";
+</style>
 ```
 
 If you want to center the chat on the screen add the following styles:
