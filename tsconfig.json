@@ -1,0 +1,6 @@
+{
+  "extends": "@padcom/tsconfig/tsconfig.vue.json",
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+  }
+}
