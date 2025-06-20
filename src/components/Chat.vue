@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { formatterType } from '../lib/markdown'
+import { formatterType } from '../lib/formatter'
 </script>
 
 <style lang="postcss" scoped>
