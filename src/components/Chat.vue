@@ -1,8 +1,12 @@
 <template>
-  <div class="chat">
+  <div :key="formatterType" class="chat">
     <slot />
   </div>
 </template>
+
+<script lang="ts" setup>
+import { formatterType } from '../lib/markdown'
+</script>
 
 <style lang="postcss" scoped>
 .chat {

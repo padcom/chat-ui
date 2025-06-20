@@ -43,13 +43,17 @@
     "@vueuse/core": "13.1.0",
     "eslint": "9.26.0",
     "github-markdown-css": "^5.8.1",
+    "marked": "^15",
     "typescript": "5.8.3",
     "vite": "6.3.5"
   },
-  "dependencies": {
-    "vue": "^3.5"
-  },
-  "optionalDependencies": {
+  "peerDependencies": {
+    "vue": "^3.5",
     "marked": "^15"
+  },
+  "peerDependenciesMeta": {
+    "marked": {
+      "optional": true
+    }
   }
 }
