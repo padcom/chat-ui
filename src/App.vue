@@ -27,7 +27,7 @@ const sleep = (ms: number) => new Promise(resolve => { setTimeout(resolve, ms) }
 // but also adds the role and message id (if present) at the top.
 // And it does so asynchronously as a cherry on top of its crazyness.
 setChatMessageFormatter(async message => {
-  await sleep(100)
+  await sleep(1000)
 
   return `
     <p><b>${message.role}</b> ${message.id ? ` / <i>${message.id}</i>` : ''}</p>
