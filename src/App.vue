@@ -24,7 +24,8 @@ import { marked } from 'marked'
 const sleep = (ms: number) => new Promise(resolve => { setTimeout(resolve, ms) })
 
 // This is a super-crazy formatter that not only displays the message
-// but also adds the role and message id (if present) at the top
+// but also adds the role and message id (if present) at the top.
+// And it does so asynchronously as a cherry on top of its crazyness.
 setChatMessageFormatter(async message => {
   await sleep(100)
 
