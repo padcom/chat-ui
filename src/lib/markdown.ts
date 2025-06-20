@@ -22,12 +22,3 @@ export function setChatMessageFormatter(fn: ChatMessageFormatter) {
 export function format(message: ChatMessage) {
   return formatter(message)
 }
-
-// async function initializeMarked() {
-//   try {
-//   } catch {
-//     console.log('[chat-ui] "marked" package not found - markdown content will not be formatted')
-//   }
-// }
-
-// void initializeMarked()
