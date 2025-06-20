@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, useTemplateRef } from 'vue'
+import { ref } from 'vue'
 
 const emit = defineEmits<{ (e: 'query', question: string): void }>()
 
-const input = useTemplateRef('input')
+const input = ref<HTMLInputElement>()
 const question = ref('')
 
 function ask() {
