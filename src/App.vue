@@ -1,5 +1,6 @@
 <template>
   <Chat class="chat">
+    <!-- <pre>{{ JSON.stringify(messages, null, 2) }}</pre> -->
     <Messages v-slot="{ message }" :messages>
       <Message :message class="markdown-body">
         ...{{ message.extra }}
@@ -13,7 +14,6 @@
 </template>
 
 <script lang="ts" setup>
-import { v4 as uuid } from 'uuid'
 import { ref, useTemplateRef, onMounted } from 'vue'
 import { Chat, Messages, Message, Prompt, addMessage, type ChatMessage } from '.'
 
@@ -24,21 +24,21 @@ interface Msg extends ChatMessage {
 const prompt = useTemplateRef('prompt')
 
 const messages = ref<Msg[]>([
-  { id: '1', role: 'system', content: 'You are a helpful assistant using [LM Studio](https://lmstudio.ai)' },
-  { id: '2', role: 'user', content: 'Who are you?' },
-  { id: '3', role: 'assistant', content: 'I am your *faithful* AI assistant' },
-  { id: '3.5', role: 'xxx', content: 'This is an example custom message' },
-  { id: '4', role: 'user', content: 'Who are you?' },
-  { id: '4.5', role: 'error', content: 'Error: connection refused' },
-  { id: '4.7', role: 'user', content: 'Who are you?' },
-  { id: '5', role: 'assistant', content: 'I am your **faithful** AI assistant' },
-  { id: '6', role: 'user', content: 'Who are you?' },
-  { id: '7', role: 'assistant', content: 'I am your _faithful_ AI assistant' },
+  { role: 'system', content: 'You are a helpful assistant using [LM Studio](https://lmstudio.ai)' },
+  { role: 'user', content: 'Who are you?' },
+  { role: 'assistant', content: 'I am your *faithful* AI assistant' },
+  { role: 'xxx', content: 'This is an example custom message' },
+  { role: 'user', content: 'Who are you?' },
+  { role: 'error', content: 'Error: connection refused' },
+  { role: 'user', content: 'Who are you?' },
+  { role: 'assistant', content: 'I am your **faithful** AI assistant' },
+  { role: 'user', content: 'Who are you?' },
+  { role: 'assistant', content: 'I am your _faithful_ AI assistant' },
 ])
 
 function ask(question: string) {
-  addMessage(messages, { extra: 'x', id: uuid(), role: 'user', content: question })
-  const msg = addMessage(messages, { extra: 'y', id: uuid(), role: 'assistant', content: `` })
+  addMessage(messages, { extra: 'x', role: 'user', content: question })
+  const msg = addMessage(messages, { extra: 'y', role: 'assistant', content: `` })
 
   setTimeout(() => { msg.content = `Here is my answer to the question _${question}_: I do not know, sorry..` }, 2000)
 }

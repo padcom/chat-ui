@@ -1,7 +1,7 @@
 <template>
   <div class="messages">
     <slot name="before" />
-    <template v-for="message in [...messages].reverse()" :key="message.id">
+    <template v-for="message in [...messages].reverse()" :key="message.id || uuid()">
       <slot :message>
         <Message :message />
       </slot>
@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup generic="T extends ChatMessage">
-import { type ChatMessage } from '..'
+import { uuid, type ChatMessage } from '..'
 
 import Message from './Message.vue'
 

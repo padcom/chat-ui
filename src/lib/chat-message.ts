@@ -12,7 +12,7 @@ export const Roles = [
 export type Role = typeof Roles[number] | (string & {})
 
 export interface ChatMessage {
-  id: string
+  id?: string
   role: Role
   content?: string
 
