@@ -3,7 +3,7 @@
     <!-- <pre>{{ JSON.stringify(messages, null, 2) }}</pre> -->
     <Messages v-slot="{ message }" :messages>
       <div v-if="message.image" :class="{ message: true, image: true, [message.role]: true }">
-        <img :src="message.image">
+        <img :src="message.image" :alt="message.image" :title="message.image">
       </div>
       <Message v-else :message class="markdown-body">
         ...{{ message.extra }}
