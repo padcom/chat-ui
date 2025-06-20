@@ -219,6 +219,8 @@ import { setChatMessageFormatter, type: ChatMessage } from '@padcom/chat-ui'
 setChatMessageFormatter((message: ChatMessage) => JSON.stringify(message, null, 2))
 ```
 
+Please note that in this case the `Message` needs to be given the `markdown-body` class as described above.
+
 ## Credits
 
 Colors and direction of messages have been ripped off from iPhone messages app.
