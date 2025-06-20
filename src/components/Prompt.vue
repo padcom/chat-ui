@@ -31,18 +31,3 @@ defineExpose({
   focus,
 })
 </script>
-
-<style lang="postcss" scoped>
-.prompt {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  padding-inline-start: 0.5rem;
-}
-
-.prompt input {
-  flex-grow: 1;
-  padding: 0.5rem;
-  border-radius: 1rem;
-}
-</style>

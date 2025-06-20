@@ -17,14 +17,3 @@ import Message from './Message.vue'
 
 defineProps<{ messages: T[] }>()
 </script>
-
-<style lang="postcss" scoped>
-.messages {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 0.5rem;
-  overflow: auto;
-  flex-grow: 1;
-  padding-inline: 0.5rem;
-}
-</style>

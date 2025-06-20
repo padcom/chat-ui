@@ -1,9 +1,9 @@
 <template>
   <Chat class="chat">
-    <!-- <pre>{{ JSON.stringify(messages, null, 2) }}</pre> -->
     <Messages v-slot="{ message }" :messages>
-      <div v-if="message.image" :class="{ message: true, image: true, [message.role]: true }">
+      <div v-if="message.image" :class="{ message: true, [message.role]: true, image: true }">
         <img :src="message.image" :alt="message.image" :title="message.image">
+        <!-- <p>{{ message.image }}</p> -->
       </div>
       <Message v-else :message class="markdown-body">
         ...{{ message.extra }}
@@ -21,19 +21,12 @@ import { ref, onMounted } from 'vue'
 import { Chat, Messages, Message, Prompt, addMessage, type ChatMessage, setChatMessageFormatter } from '.'
 import { marked } from 'marked'
 
-const sleep = (ms: number) => new Promise(resolve => { setTimeout(resolve, ms) })
-
 // This is a super-crazy formatter that not only displays the message
 // but also adds the role and message id (if present) at the top.
-// And it does so asynchronously as a cherry on top of its crazyness.
-setChatMessageFormatter(async message => {
-  await sleep(1000)
-
-  return `
-    <p><b>${message.role}</b> ${message.id ? ` / <i>${message.id}</i>` : ''}</p>
-    ${marked(message.content || '') as string}
-  `
-})
+setChatMessageFormatter(message => `
+  <p><b>${message.role}</b> ${message.id ? ` / <i>${message.id}</i>` : ''}</p>
+  ${marked(message.content || '') as string}
+`)
 
 interface Msg extends ChatMessage {
   extra?: string
@@ -91,7 +84,11 @@ html, body {
   background-color: antiquewhite
 }
 
-.message.image img {
-  max-width: 50%;
+.message.image {
+  background-color: transparent !important;
+
+  & img {
+    max-width: 50%;
+  }
 }
 </style>

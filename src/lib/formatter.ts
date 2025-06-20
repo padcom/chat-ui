@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { uuid, type ChatMessage } from '.'
 
-export type ChatMessageFormatter = (message: ChatMessage) => string | Promise<string>
+export type ChatMessageFormatter = (message: ChatMessage) => string
 
 export const formatterType = ref('plain')
 
