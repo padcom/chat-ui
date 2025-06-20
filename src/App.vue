@@ -17,7 +17,10 @@
 import { ref, onMounted } from 'vue'
 import { Chat, Messages, Message, Prompt, addMessage, type ChatMessage, setChatMessageFormatter } from '.'
 
-setChatMessageFormatter(message => JSON.stringify(message))
+setChatMessageFormatter(message => `
+  <p>${message.role} ${message.id ? ` / ${message.id}` : ''}</p>
+  <p>${message.content}</p>
+`)
 
 interface Msg extends ChatMessage {
   extra?: string
@@ -26,12 +29,12 @@ interface Msg extends ChatMessage {
 const prompt = ref<InstanceType<typeof Prompt>>()
 
 const messages = ref<Msg[]>([
-  { role: 'system', content: 'You are a helpful assistant using [LM Studio](https://lmstudio.ai)' },
+  { id: '1', role: 'system', content: 'You are a helpful assistant using [LM Studio](https://lmstudio.ai)' },
   { role: 'user', content: 'Who are you?' },
   { role: 'assistant', content: 'I am your *faithful* AI assistant' },
   { role: 'xxx', content: 'This is an example custom message' },
   { role: 'user', content: 'Who are you?' },
-  { role: 'error', content: 'Error: connection refused' },
+  { id: '1234', role: 'error', content: 'Error: connection refused' },
   { role: 'user', content: 'Who are you?' },
   { role: 'assistant', content: 'I am your **faithful** AI assistant' },
   { role: 'user', content: 'Who are you?' },
