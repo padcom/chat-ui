@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import { v4 as uuid } from 'uuid'
 import { ref, useTemplateRef, onMounted } from 'vue'
-import { Chat, Messages, Message, Prompt, type ChatMessage } from '.'
+import { Chat, Messages, Message, Prompt, addMessage, type ChatMessage } from '.'
 
 interface Msg extends ChatMessage {
   extra?: string
@@ -35,9 +35,8 @@ const messages = ref<Msg[]>([
 ])
 
 function ask(question: string) {
-  messages.value.push({ extra: 'x', id: uuid(), role: 'user', content: question })
-  messages.value.push({ extra: 'y', id: uuid(), role: 'assistant', content: `` })
-  const msg = messages.value.at(-1)!
+  addMessage(messages, { extra: 'x', id: uuid(), role: 'user', content: question })
+  const msg = addMessage(messages, { extra: 'y', id: uuid(), role: 'assistant', content: `` })
 
   setTimeout(() => { msg.content = `Here is my answer to the question _${question}_: I do not know, sorry..` }, 2000)
 }
