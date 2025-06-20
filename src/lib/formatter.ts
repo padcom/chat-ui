@@ -22,18 +22,3 @@ export function setChatMessageFormatter(fn: ChatMessageFormatter) {
 export function format(message: ChatMessage) {
   return formatter(message)
 }
-
-async function tryImportingFormatter(name: string) {
-  try {
-    await import(name)
-  } catch {
-    // ignore
-  }
-}
-
-async function tryImportingKnownFormatters() {
-  await tryImportingFormatter('@padcom/chat-ui-formatter-marked')
-  await tryImportingFormatter('@padcom/chat-ui-formatter-json')
-}
-
-void tryImportingKnownFormatters()
