@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, useTemplateRef, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Chat, Messages, Message, Prompt, addMessage, type ChatMessage, setChatMessageFormatter } from '.'
 
 setChatMessageFormatter(message => JSON.stringify(message))
@@ -23,7 +23,7 @@ interface Msg extends ChatMessage {
   extra?: string
 }
 
-const prompt = useTemplateRef('prompt')
+const prompt = ref<InstanceType<typeof Prompt>>()
 
 const messages = ref<Msg[]>([
   { role: 'system', content: 'You are a helpful assistant using [LM Studio](https://lmstudio.ai)' },
