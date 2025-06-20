@@ -21,12 +21,18 @@ import { ref, onMounted } from 'vue'
 import { Chat, Messages, Message, Prompt, addMessage, type ChatMessage, setChatMessageFormatter } from '.'
 import { marked } from 'marked'
 
+const sleep = (ms: number) => new Promise(resolve => { setTimeout(resolve, ms) })
+
 // This is a super-crazy formatter that not only displays the message
 // but also adds the role and message id (if present) at the top
-setChatMessageFormatter(message => `
-  <p><b>${message.role}</b> ${message.id ? ` / <i>${message.id}</i>` : ''}</p>
-  ${marked(message.content || '') as string}
-`)
+setChatMessageFormatter(async message => {
+  await sleep(100)
+
+  return `
+    <p><b>${message.role}</b> ${message.id ? ` / <i>${message.id}</i>` : ''}</p>
+    ${marked(message.content || '') as string}
+  `
+})
 
 interface Msg extends ChatMessage {
   extra?: string

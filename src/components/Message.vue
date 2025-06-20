@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <div v-if="message.content" :class="{ message: true, [message.role]: true }"
-    v-html="format(message)"
+    v-html="content"
   />
   <div v-else class="message" :class="{ [message.role]: true }">
     <slot>...</slot>
@@ -9,9 +9,17 @@
 </template>
 
 <script lang="ts" setup generic="T extends ChatMessage">
+import { ref, onBeforeMount } from 'vue'
 import { format, type ChatMessage } from '../lib'
 
-defineProps<{ message: T }>()
+const props = defineProps<{ message: T }>()
+
+const content = ref('')
+
+onBeforeMount(async () => {
+  content.value = props.message.content || ''
+  content.value = await format(props.message)
+})
 </script>
 
 <style lang="postcss" scoped>
