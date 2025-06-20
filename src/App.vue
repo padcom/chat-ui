@@ -19,10 +19,13 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { Chat, Messages, Message, Prompt, addMessage, type ChatMessage, setChatMessageFormatter } from '.'
+import { marked } from 'marked'
 
+// This is a super-crazy formatter that not only displays the message
+// but also adds the role and message id (if present) at the top
 setChatMessageFormatter(message => `
-  <p>${message.role} ${message.id ? ` / ${message.id}` : ''}</p>
-  <p>${message.content}</p>
+  <p><b>${message.role}</b> ${message.id ? ` / <i>${message.id}</i>` : ''}</p>
+  ${marked(message.content || '') as string}
 `)
 
 interface Msg extends ChatMessage {
