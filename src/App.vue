@@ -2,7 +2,10 @@
   <Chat class="chat">
     <!-- <pre>{{ JSON.stringify(messages, null, 2) }}</pre> -->
     <Messages v-slot="{ message }" :messages>
-      <Message :message class="markdown-body">
+      <div v-if="message.image" :class="{ message: true, image: true, [message.role]: true }">
+        <img :src="message.image">
+      </div>
+      <Message v-else :message class="markdown-body">
         ...{{ message.extra }}
       </Message>
     </Messages>
@@ -24,6 +27,7 @@ setChatMessageFormatter(message => `
 
 interface Msg extends ChatMessage {
   extra?: string
+  image?: string
 }
 
 const prompt = ref<InstanceType<typeof Prompt>>()
@@ -36,7 +40,7 @@ const messages = ref<Msg[]>([
   { role: 'user', content: 'Who are you?' },
   { id: '1234', role: 'error', content: 'Error: connection refused' },
   { role: 'user', content: 'Who are you?' },
-  { role: 'assistant', content: 'I am your **faithful** AI assistant' },
+  { role: 'assistant', image: 'landscape.png' },
   { role: 'user', content: 'Who are you?' },
   { role: 'assistant', content: 'I am your _faithful_ AI assistant' },
 ])
@@ -75,5 +79,9 @@ html, body {
   text-align: center;
   width: 100%;
   background-color: antiquewhite
+}
+
+.message.image img {
+  max-width: 50%;
 }
 </style>
