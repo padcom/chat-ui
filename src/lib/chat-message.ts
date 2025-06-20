@@ -6,6 +6,7 @@ export const Roles = [
   'assistant',
   'tool',
   'user',
+  'error',
 ] as const
 
 export type Role = typeof Roles[number] | (string & {})

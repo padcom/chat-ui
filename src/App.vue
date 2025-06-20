@@ -29,6 +29,8 @@ const messages = ref<Msg[]>([
   { id: '3', role: 'assistant', content: 'I am your *faithful* AI assistant' },
   { id: '3.5', role: 'xxx', content: 'This is an example custom message' },
   { id: '4', role: 'user', content: 'Who are you?' },
+  { id: '4.5', role: 'error', content: 'Error: connection refused' },
+  { id: '4.7', role: 'user', content: 'Who are you?' },
   { id: '5', role: 'assistant', content: 'I am your **faithful** AI assistant' },
   { id: '6', role: 'user', content: 'Who are you?' },
   { id: '7', role: 'assistant', content: 'I am your _faithful_ AI assistant' },
