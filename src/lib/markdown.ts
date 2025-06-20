@@ -21,7 +21,7 @@ async function initializeMarked() {
     formatter = (source: string) => marked(source || '', { renderer })
     formatterType.value = 'marked'
   } catch {
-    console.log('marked package not found. Markdown content will not be formatted')
+    console.log('[chat-ui] "marked" package not found - markdown content will not be formatted')
   }
 }
 
