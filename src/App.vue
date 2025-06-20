@@ -25,7 +25,7 @@ import { marked } from 'marked'
 // but also adds the role and message id (if present) at the top.
 setChatMessageFormatter(message => `
   <p><b>${message.role}</b> ${message.id ? ` / <i>${message.id}</i>` : ''}</p>
-  ${marked(message.content || '') as string}
+  ${marked(message.content || '', { async: false })}
 `)
 
 interface Msg extends ChatMessage {
