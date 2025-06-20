@@ -190,6 +190,35 @@ In which case you'll get full code completion for your custom properties of mess
 The component library will evolve over time. All customizations are usually tested in `App.vue`,
 which is also the playground for me to work with the library.
 
+## Message formatters
+
+Usually the format of the message, when chatting with an LLM is [markdown](https://en.wikipedia.org/wiki/Markdown).
+By default there is no preprocessing done on the `content` of a `Message` and so the text is displayed as-is.
+
+To format the message use one of the available message formatters from npm.
+For example to use the [marked](https://npmjs.com/package/marked) install it via npm:
+
+```bash
+$ npm install --save-dev @padcom/chat-ui-formatter-marked
+```
+
+It registers itself automatically so the only thing you need to do is to make sure it is imported:
+
+```javascript
+import '@padcom/chat-ui-formatter-marked'
+```
+
+### Custom message formatter
+
+If you'd like to use a different package for formatting messages, or you'd like them to be presented
+in a different way (e.g. to display messages in JSON format) you can register your own formatter:
+
+```javascript
+import { setChatMessageFormatter, type: ChatMessage } from '@padcom/chat-ui'
+
+setChatMessageFormatter((message: ChatMessage) => JSON.stringify(message, null, 2))
+```
+
 ## Credits
 
 Colors and direction of messages have been ripped off from iPhone messages app.

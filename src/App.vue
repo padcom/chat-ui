@@ -15,7 +15,9 @@
 
 <script lang="ts" setup>
 import { ref, useTemplateRef, onMounted } from 'vue'
-import { Chat, Messages, Message, Prompt, addMessage, type ChatMessage } from '.'
+import { Chat, Messages, Message, Prompt, addMessage, type ChatMessage, setChatMessageFormatter } from '.'
+
+setChatMessageFormatter(message => JSON.stringify(message))
 
 interface Msg extends ChatMessage {
   extra?: string
