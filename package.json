@@ -41,11 +41,13 @@
     "@padcom/tsconfig": "0.0.3",
     "@padcom/vite-config-vue-lib": "0.11.0",
     "@vueuse/core": "13.1.0",
+    "css-select": "5.1.0",
     "eslint": "9.26.0",
     "marked": "^15.0.12",
     "github-markdown-css": "^5.8.1",
     "typescript": "5.8.3",
-    "vite": "6.3.5"
+    "vite": "6.3.5",
+    "vue": "^3.5"
   },
   "dependencies": {
     "uuid": "*"
