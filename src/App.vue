@@ -18,13 +18,23 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { Chat, Messages, Message, Prompt, addMessage, type ChatMessage, setChatMessageFormatter } from '.'
+import { Chat, Messages, Message, Prompt, addMessage, setChatMessageFormatter, type ChatMessage, type Role } from '.'
 import { marked } from 'marked'
+
+function getRoleTextAlignment(role: Role) {
+  switch (role) {
+    case 'assistant': return 'left'
+    case 'user': return 'right'
+    default: return 'center'
+  }
+}
 
 // This is a super-crazy formatter that not only displays the message
 // but also adds the role and message id (if present) at the top.
 setChatMessageFormatter(message => `
-  <p><b>${message.role}</b> ${message.id ? ` / <i>${message.id}</i>` : ''}</p>
+  <p style="text-align: ${getRoleTextAlignment(message.role)}">
+    <b>${message.role}</b> ${message.id ? ` / <i>${message.id}</i>` : ''}
+  </p>
   ${marked(message.content || '', { async: false })}
 `)
 

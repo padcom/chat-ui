@@ -30,7 +30,7 @@
     "./dist/index.css": "./dist/index.css"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
     "dev": "vite build -w",
     "build": "vite build",
     "prepublishOnly": "npm install && npm run build"
@@ -46,6 +46,9 @@
     "github-markdown-css": "^5.8.1",
     "typescript": "5.8.3",
     "vite": "6.3.5"
+  },
+  "dependencies": {
+    "uuid": "*"
   },
   "peerDependencies": {
     "vue": "^3.5"
