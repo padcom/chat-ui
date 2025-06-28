@@ -5,7 +5,7 @@
         <img :src="message.image" :alt="message.image" :title="message.image">
         <!-- <p>{{ message.image }}</p> -->
       </div>
-      <Message v-else :message class="markdown-body">
+      <Message v-else :message class="markdown-body" :class="{ green: message.green }">
         ...{{ message.extra }}
       </Message>
     </Messages>
@@ -37,10 +37,12 @@ const prompt = ref<InstanceType<typeof Prompt>>()
 
 const messages = ref<Msg[]>([
   { id: '1', role: 'system', content: 'You are a helpful assistant using [LM Studio](https://lmstudio.ai)' },
-  { role: 'user', content: 'Who are you?' },
+  { role: 'user', content: 'Hello', green: true },
+  { role: 'user', content: 'Who are you?', green: true },
   { role: 'assistant', content: 'I am your *faithful* AI assistant' },
+  { role: 'assistant', content: 'Ask me anything' },
   { role: 'xxx', content: 'This is an example custom message' },
-  { role: 'user', content: 'Who are you?' },
+  { role: 'user', content: 'Who are you?', green: true },
   { id: '1234', role: 'error', content: 'Error: connection refused' },
   { role: 'user', content: 'Who are you?' },
   { role: 'assistant', image: 'landscape.png' },
@@ -86,9 +88,14 @@ html, body {
 
 .message.image {
   background-color: transparent !important;
+  &:before, &:after { display: none; }
 
   & img {
     max-width: 50%;
   }
+}
+
+.message.green {
+  --chat-user-bg: #35ce5c;
 }
 </style>
