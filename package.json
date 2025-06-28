@@ -46,7 +46,7 @@
     "marked": "^15.0.12",
     "github-markdown-css": "^5.8.1",
     "typescript": "5.8.3",
-    "vite": "6.3.5",
+    "vite": "^7.0.0",
     "vue": "^3.5"
   },
   "dependencies": {
