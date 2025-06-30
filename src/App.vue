@@ -22,9 +22,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, watch, onMounted } from 'vue'
-import { Chat, Messages, Message, Prompt, setChatMessageFormatter, type ChatMessage, type Role } from '.'
+import { ref, shallowRef, onMounted } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
 import { marked } from 'marked'
+
+import { Chat, Messages, Message, Prompt, setChatMessageFormatter, type ChatMessage, type Role } from '.'
 import { hasEmbeddedLanguageModel, type Assistant, DumpAssistant, RealAssistant } from './assistant'
 
 function getRoleTextAlignment(role: Role) {
@@ -51,25 +53,17 @@ interface Msg extends ChatMessage {
 
 const prompt = ref<InstanceType<typeof Prompt>>()
 const messages = ref<Msg[]>([])
-const systemPrompt = ref('You are a helpful assistant.')
-
-onMounted(() => {
-  const stored = localStorage.getItem('system-prompt')
-
-  if (stored !== null) {
-    systemPrompt.value = stored
-  }
-})
-
-watch(systemPrompt, () => {
-  localStorage.setItem('system-prompt', systemPrompt.value)
-})
+const systemPrompt = useLocalStorage('system-prompt', 'You are a helpful assistant.')
 
 const assistant = shallowRef<Assistant>(hasEmbeddedLanguageModel()
   ? new RealAssistant()
   : new DumpAssistant())
 
 const abortController = shallowRef<AbortController>()
+
+function newConversation() {
+  return assistant.value.initSession(messages, systemPrompt.value)
+}
 
 async function ask(question: string) {
   abortController.value = new AbortController()
@@ -80,10 +74,6 @@ async function ask(question: string) {
 
 function abort() {
   abortController.value?.abort('User stopped the response')
-}
-
-function newConversation() {
-  return assistant.value.initSession(messages, systemPrompt.value)
 }
 
 onMounted(async () => {
