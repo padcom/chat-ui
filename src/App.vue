@@ -21,7 +21,7 @@
 import { ref, onMounted, shallowRef } from 'vue'
 import { Chat, Messages, Message, Prompt, setChatMessageFormatter, type ChatMessage, type Role } from '.'
 import { marked } from 'marked'
-import { Assistant, DumpAssistant, hasEmbeddedLanguageModel, RealAssistant } from './assistant'
+import { hasEmbeddedLanguageModel, type Assistant, DumpAssistant, RealAssistant } from './assistant'
 
 function getRoleTextAlignment(role: Role) {
   switch (role) {

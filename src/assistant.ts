@@ -4,15 +4,13 @@ import { addMessage, filterSyntheticMessages, type ChatMessage } from './lib'
 /**
  * Base class for assistants
  */
-export abstract class Assistant {
+export interface Assistant {
   /**
    * Initialize an assistant session (aka chat)
    *
-   * @param messages ref to a list of messages
+   * @returns messages list of messages
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async initSession(messages: Ref<ChatMessage[]>) {
-  }
+  initSession(messages: Ref<ChatMessage[]>): Promise<void>
 
   /**
    * Asks a question
@@ -21,18 +19,21 @@ export abstract class Assistant {
    * @param messages ref to a list of all messages
    * @param signal signal to use to abort the response
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/require-await
-  async query(question: string, messages: Ref<ChatMessage[]>, signal?: AbortSignal) {
-    throw new Error('Not implemented')
-  }
+  query(question: string, messages: Ref<ChatMessage[]>, signal?: AbortSignal): Promise<void>
 }
 
 /**
  * A dumb assistant that responds with the given text
  */
-export class DumpAssistant extends Assistant {
+export class DumpAssistant implements Assistant {
   private sleep(ms: number) {
     return new Promise(resolve => { setTimeout(resolve, ms) })
+  }
+
+  async initSession(messages: Ref<ChatMessage[]>) {
+    messages.value = []
+
+    return Promise.resolve()
   }
 
   async query(question: string, messages: Ref<ChatMessage[]>) {
@@ -56,11 +57,12 @@ export function hasEmbeddedLanguageModel() {
 /**
  * An assistant that uses the embedded LanguageModel API (Chrome 107+)
  */
-export class RealAssistant extends Assistant {
+export class RealAssistant implements Assistant {
   private session: any
 
   async initSession(messages: Ref<ChatMessage[]>) {
     messages.value = []
+
     addMessage(messages, { role: 'system', content: 'You are a helpful assistant' })
     const message = addMessage(messages, { role: 'synthetic' })
 
