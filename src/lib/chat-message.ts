@@ -7,6 +7,7 @@ export const Roles = [
   'tool',
   'user',
   'error',
+  'synthetic',
 ] as const
 
 export type Role = typeof Roles[number] | (string & {})
@@ -37,4 +38,14 @@ export function addMessage<T extends ChatMessage>(messages: Ref<T[]>, message: T
   messages.value.push(message)
 
   return messages.value.at(-1)!
+}
+
+/**
+ * Returns a list of non-synthetic messages
+ *
+ * @param messages list of all messages
+ * @returns only non-synthetic messages
+ */
+export function filterSyntheticMessages(messages: ChatMessage[]) {
+  return messages.filter(msg => msg.role !== 'synthetic')
 }

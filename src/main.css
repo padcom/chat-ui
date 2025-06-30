@@ -3,6 +3,8 @@
   --chat-other-bg: #faedf1;
   --chat-error-bg: red;
   --chat-error-text: black;
+  --chat-synthetic-bg: #ededfa;
+  --chat-synthetic-text: black;
   --chat-assistant-bg: #e9e9eb;
   --chat-user-bg: #0080ff;
   --chat-user-text: white;
@@ -41,7 +43,8 @@
       &.system,
       &.developer,
       &.tool,
-      &.error {
+      &.error,
+      &.synthetic {
         align-self: center;
         text-align: center;
       }
@@ -61,6 +64,10 @@
       &.error {
         background-color: var(--chat-error-bg);
         color: var(--chat-error-text);
+      }
+      &.synthetic {
+        background-color: var(--chat-synthetic-bg);
+        color: var(--chat-synthetic-text);
       }
       &.assistant {
         background-color: var(--chat-assistant-bg);

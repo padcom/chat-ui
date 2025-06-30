@@ -9,17 +9,19 @@
         ...{{ message.extra }}
       </Message>
     </Messages>
-    <Prompt ref="prompt" placeholder="Press Enter to send, Ctrl+Del to clear messages"
+    <Prompt ref="prompt" placeholder="Press Enter to send, Ctrl+Del to clear messages, Esc to abort response"
       @query="ask"
-      @keydown.ctrl.delete="messages = []"
+      @keydown.ctrl.delete="newConversation()"
+      @keydown.esc="abort()"
     />
   </Chat>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import { Chat, Messages, Message, Prompt, addMessage, setChatMessageFormatter, type ChatMessage, type Role } from '.'
+import { ref, onMounted, shallowRef } from 'vue'
+import { Chat, Messages, Message, Prompt, setChatMessageFormatter, type ChatMessage, type Role } from '.'
 import { marked } from 'marked'
+import { Assistant, DumpAssistant, hasEmbeddedLanguageModel, RealAssistant } from './assistant'
 
 function getRoleTextAlignment(role: Role) {
   switch (role) {
@@ -45,7 +47,11 @@ interface Msg extends ChatMessage {
 
 const prompt = ref<InstanceType<typeof Prompt>>()
 
-const messages = ref<Msg[]>([
+const messagesUsingBuiltInLanguageModel = [
+  { role: 'system', content: 'You are a helpful assistant' },
+]
+
+const messagesWhenNoBuiltInLanguageModelIsAvailable = [
   { id: '1', role: 'system', content: 'You are a helpful assistant using [LM Studio](https://lmstudio.ai)' },
   { role: 'user', content: 'Hello', green: true },
   { role: 'user', content: 'Who are you?', green: true },
@@ -58,17 +64,37 @@ const messages = ref<Msg[]>([
   { role: 'assistant', image: 'landscape.png' },
   { role: 'user', content: 'Who are you?' },
   { role: 'assistant', content: 'I am your _faithful_ AI assistant' },
-])
+]
 
-function ask(question: string) {
-  addMessage(messages, { extra: 'x', role: 'user', content: question })
-  const msg = addMessage(messages, { extra: 'y', role: 'assistant', content: `` })
+// @ts-ignore not typed yet
+const messages = ref<Msg[]>(window.LanguageModel
+  ? messagesUsingBuiltInLanguageModel
+  : messagesWhenNoBuiltInLanguageModelIsAvailable)
 
-  setTimeout(() => { msg.content = `Here is my answer to the question _${question}_: I do not know, sorry..` }, 2000)
+const assistant = shallowRef<Assistant>(hasEmbeddedLanguageModel()
+  ? new RealAssistant()
+  : new DumpAssistant())
+
+const abortController = shallowRef<AbortController>()
+
+async function ask(question: string) {
+  abortController.value = new AbortController()
+  await assistant.value.query(question, messages, abortController.value.signal)
+  // eslint-disable-next-line require-atomic-updates
+  abortController.value = undefined
 }
 
-onMounted(() => {
+function abort() {
+  abortController.value?.abort('User stopped the response')
+}
+
+function newConversation() {
+  return assistant.value.initSession(messages)
+}
+
+onMounted(async () => {
   prompt.value?.focus()
+  await newConversation()
 })
 </script>
 
