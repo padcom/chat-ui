@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, shallowRef } from 'vue'
+import { ref, shallowRef, watch, onMounted } from 'vue'
 import { Chat, Messages, Message, Prompt, setChatMessageFormatter, type ChatMessage, type Role } from '.'
 import { marked } from 'marked'
 import { hasEmbeddedLanguageModel, type Assistant, DumpAssistant, RealAssistant } from './assistant'
@@ -50,13 +50,20 @@ interface Msg extends ChatMessage {
 }
 
 const prompt = ref<InstanceType<typeof Prompt>>()
-
 const messages = ref<Msg[]>([])
+const systemPrompt = ref('You are a helpful assistant.')
 
-const systemPrompt = ref([
-  'You are an assistant that takes the user message and translates it to Polish.',
-  'Respond only with the Polish translation and nothing else.',
-].join('\n'))
+onMounted(() => {
+  const stored = localStorage.getItem('system-prompt')
+
+  if (stored !== null) {
+    systemPrompt.value = stored
+  }
+})
+
+watch(systemPrompt, () => {
+  localStorage.setItem('system-prompt', systemPrompt.value)
+})
 
 const assistant = shallowRef<Assistant>(hasEmbeddedLanguageModel()
   ? new RealAssistant()
