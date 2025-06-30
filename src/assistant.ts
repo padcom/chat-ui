@@ -1,5 +1,6 @@
 import type { Ref } from 'vue'
 import { addMessage, filterSyntheticMessages, type ChatMessage } from './lib'
+import type { Session } from './LanguageModel'
 
 /**
  * Base class for assistants
@@ -71,7 +72,7 @@ export function hasEmbeddedLanguageModel() {
  * An assistant that uses the embedded LanguageModel API (Chrome 107+)
  */
 export class RealAssistant implements Assistant {
-  private session: any
+  private session?: Session
 
   async initSession(messages: Ref<ChatMessage[]>, systemPrompt: string) {
     messages.value = [
@@ -80,12 +81,11 @@ export class RealAssistant implements Assistant {
 
     const message = addMessage(messages, { role: 'synthetic' })
 
-    // @ts-ignore not typed yet
-    this.session = await LanguageModel.create({
+    this.session = await window.LanguageModel.create({
       initialPrompts: filterSyntheticMessages(messages.value),
-      // @ts-ignore not typed yet
       monitor(m) {
-        m.addEventListener('downloadprogress', (e: any) => {
+        m.addEventListener('downloadprogress', e => { console.log(e) })
+        m.addEventListener('downloadprogress', e => {
           message.content = `Model download: ${e.loaded * 100}%`
         })
       },
@@ -95,7 +95,7 @@ export class RealAssistant implements Assistant {
   async query(question: string, messages: Ref<ChatMessage[]>, signal?: AbortSignal) {
     addMessage(messages, { role: 'user', content: question })
     const message = addMessage(messages, { role: 'assistant', content: '' })
-    const stream = this.session.promptStreaming(question, { signal })
+    const stream = this.session!.promptStreaming(question, { signal })
     for await (const chunk of stream) message.content += String(chunk)
   }
 }
