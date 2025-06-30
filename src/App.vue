@@ -1,5 +1,9 @@
 <template>
   <Chat class="chat">
+    <div class="system-prompt">
+      <label>System prompt</label>
+      <textarea v-model="systemPrompt"></textarea>
+    </div>
     <Messages v-slot="{ message }" :messages>
       <div v-if="message.image" :class="{ message: true, [message.role]: true, image: true }">
         <img :src="message.image" :alt="message.image" :title="message.image">
@@ -47,29 +51,12 @@ interface Msg extends ChatMessage {
 
 const prompt = ref<InstanceType<typeof Prompt>>()
 
-const messagesUsingBuiltInLanguageModel = [
-  { role: 'system', content: 'You are a helpful assistant' },
-]
+const messages = ref<Msg[]>([])
 
-const messagesWhenNoBuiltInLanguageModelIsAvailable = [
-  { id: '1', role: 'system', content: 'You are a helpful assistant using [LM Studio](https://lmstudio.ai)' },
-  { role: 'user', content: 'Hello', green: true },
-  { role: 'user', content: 'Who are you?', green: true },
-  { role: 'assistant', content: 'I am your *faithful* AI assistant' },
-  { role: 'assistant', content: 'Ask me anything' },
-  { role: 'xxx', content: 'This is an example custom message' },
-  { role: 'user', content: 'Who are you?', green: true },
-  { id: '1234', role: 'error', content: 'Error: connection refused' },
-  { role: 'user', content: 'Who are you?' },
-  { role: 'assistant', image: 'landscape.png' },
-  { role: 'user', content: 'Who are you?' },
-  { role: 'assistant', content: 'I am your _faithful_ AI assistant' },
-]
-
-// @ts-ignore not typed yet
-const messages = ref<Msg[]>(window.LanguageModel
-  ? messagesUsingBuiltInLanguageModel
-  : messagesWhenNoBuiltInLanguageModelIsAvailable)
+const systemPrompt = ref([
+  'You are an assistant that takes the user message and translates it to Polish.',
+  'Respond only with the Polish translation and nothing else.',
+].join('\n'))
 
 const assistant = shallowRef<Assistant>(hasEmbeddedLanguageModel()
   ? new RealAssistant()
@@ -89,7 +76,7 @@ function abort() {
 }
 
 function newConversation() {
-  return assistant.value.initSession(messages)
+  return assistant.value.initSession(messages, systemPrompt.value)
 }
 
 onMounted(async () => {
@@ -113,6 +100,21 @@ html, body {
   height: calc(100dvh - 2rem);
   margin-inline: auto;
   padding-block: 1rem;
+}
+
+.system-prompt {
+  display: flex;
+  flex-direction: column;
+
+  & label {
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  & textarea {
+    width: 100%;
+    height: 4rem;
+  }
 }
 
 .message.xxx {

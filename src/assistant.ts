@@ -10,7 +10,7 @@ export interface Assistant {
    *
    * @returns messages list of messages
    */
-  initSession(messages: Ref<ChatMessage[]>): Promise<void>
+  initSession(messages: Ref<ChatMessage[]>, systemPrompt?: string): Promise<void>
 
   /**
    * Asks a question
@@ -31,7 +31,20 @@ export class DumpAssistant implements Assistant {
   }
 
   async initSession(messages: Ref<ChatMessage[]>) {
-    messages.value = []
+    messages.value = [
+      { id: '1', role: 'system', content: 'You are a helpful assistant using [LM Studio](https://lmstudio.ai)' },
+      { role: 'user', content: 'Hello', green: true },
+      { role: 'user', content: 'Who are you?', green: true },
+      { role: 'assistant', content: 'I am your *faithful* AI assistant' },
+      { role: 'assistant', content: 'Ask me anything' },
+      { role: 'xxx', content: 'This is an example custom message' },
+      { role: 'user', content: 'Who are you?', green: true },
+      { id: '1234', role: 'error', content: 'Error: connection refused' },
+      { role: 'user', content: 'Who are you?' },
+      { role: 'assistant', image: 'landscape.png' },
+      { role: 'user', content: 'Who are you?' },
+      { role: 'assistant', content: 'I am your _faithful_ AI assistant' },
+    ]
 
     return Promise.resolve()
   }
@@ -60,10 +73,11 @@ export function hasEmbeddedLanguageModel() {
 export class RealAssistant implements Assistant {
   private session: any
 
-  async initSession(messages: Ref<ChatMessage[]>) {
-    messages.value = []
+  async initSession(messages: Ref<ChatMessage[]>, systemPrompt: string) {
+    messages.value = [
+      { role: 'system', content: systemPrompt.trim() },
+    ]
 
-    addMessage(messages, { role: 'system', content: 'You are a helpful assistant' })
     const message = addMessage(messages, { role: 'synthetic' })
 
     // @ts-ignore not typed yet
@@ -72,7 +86,7 @@ export class RealAssistant implements Assistant {
       // @ts-ignore not typed yet
       monitor(m) {
         m.addEventListener('downloadprogress', (e: any) => {
-          message.content = `Downloaded ${e.loaded * 100}%`
+          message.content = `Model download: ${e.loaded * 100}%`
         })
       },
     })
